@@ -22,6 +22,17 @@ namespace GamemodeDatabase
             {
                 entity.HasKey(e => e.Id);
 
+                entity.Property(e => e.PositionX)
+                    .HasDefaultValue(1685.8075);
+
+                entity.Property(e => e.PositionY)
+                    .HasDefaultValue(-2239.2583);
+
+                entity.Property(e => e.PositionZ)
+                    .HasDefaultValue(13.5469);
+
+                entity.Property(e => e.FacingAngle)
+                    .HasDefaultValue(179.4454);
             });
         }
     }
