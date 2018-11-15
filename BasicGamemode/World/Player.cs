@@ -34,36 +34,46 @@ namespace BasicGamemode.World
 
             SetWorldBounds(2500.0f, 1850.0f, 631.2963f, -454.9898f);
 
-            if (Account is null)
+            try
             {
-                var dialog = new InputDialog("Register", "Input your password", true, "Accept", "Cancel");
-                dialog.Show(this);
-                dialog.Response += (sender, ev) =>
+                if (Account is null)
                 {
-                    switch (ev.DialogButton)
+                    var dialog = new InputDialog("Register", "Input your password", true, "Accept", "Cancel");
+                    dialog.Show(this);
+                    dialog.Response += (sender, ev) =>
                     {
-                        case DialogButton.Left:
+                        switch (ev.DialogButton)
                         {
-                            using (var db = new GamemodeContext())
+                            case DialogButton.Left:
                             {
+                                using (var db = new GamemodeContext())
+                                {
                                     var player = new PlayerModel
                                     {
                                         Password = ev.InputText,
                                         PlayerName = this.Name
                                     };
+                                    db.Players.Add(player);
                                     db.SaveChanges();
+                                }
                             }
+                                break;
+                            case DialogButton.Right:
+                            {
+                                this.Kick();
+                            }
+                                break;
                         }
-                            break;
-                        case DialogButton.Right:
-                        {
-                            this.Kick();
-                        }
-                            break;
-                    }
-                };
+                    };
 
+                }
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+            
 
             base.OnConnected(e);
         }
