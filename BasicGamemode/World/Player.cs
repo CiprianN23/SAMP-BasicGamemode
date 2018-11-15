@@ -15,6 +15,9 @@ namespace BasicGamemode.World
     [PooledType]
     public class Player : BasePlayer
     {
+        private Timer _kickTimer;
+        private int _loginTries;
+
         public PlayerModel Account
         {
             get
@@ -56,7 +59,14 @@ namespace BasicGamemode.World
                     case DialogButton.Left:
                     {
                         var player = Account;
-                        if (BCryptHelper.CheckPassword(ev.InputText, player.Password))
+
+                        if (_loginTries >= Config.MaximumLoginTries)
+                        {
+                            SendClientMessage(Color.OrangeRed, "You exceed maximum login tries. You have been kicked!");
+                            _kickTimer = new Timer(1500, false);
+                            _kickTimer.Tick += _kickTimer_Tick;
+                        }
+                        else if (BCryptHelper.CheckPassword(ev.InputText, player.Password))
                         {
                             SetSpawnInfo(NoTeam, 0, new Vector3(1.0, 1.0, 1.5), 90.0f);
                             Spawn();
@@ -64,6 +74,8 @@ namespace BasicGamemode.World
                         else
                         {
                             SendClientMessage(Color.Red, "Wrong password");
+                            LoginPlayer();
+                            _loginTries++;
                         }
                     }
                         break;
@@ -74,6 +86,11 @@ namespace BasicGamemode.World
                         break;
                 }
             };
+        }
+
+        private void _kickTimer_Tick(object sender, EventArgs e)
+        {
+            Kick();
         }
 
         private void RegisterPlayer()
