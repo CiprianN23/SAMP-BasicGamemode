@@ -1,7 +1,5 @@
-﻿using System;
-using GamemodeDatabase.Models;
+﻿using GamemodeDatabase.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace GamemodeDatabase
 {

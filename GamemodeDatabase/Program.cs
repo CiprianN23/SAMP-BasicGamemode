@@ -7,11 +7,7 @@ namespace GamemodeDatabase
     {
         static void Main()
         {
-            using (var context = new GamemodeContext())
-            {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
-            }
+            
         }
     }
 }

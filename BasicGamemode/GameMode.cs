@@ -1,10 +1,8 @@
 ﻿using System;
 using BasicGamemode.Controllers;
-using BasicGamemode.World;
+using GamemodeDatabase;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
-using SampSharp.GameMode.Events;
-using SampSharp.GameMode.World;
 
 namespace BasicGamemode
 {
@@ -12,12 +10,17 @@ namespace BasicGamemode
     {
         protected override void OnInitialized(EventArgs e)
         {
-            SetGameModeText("Test RPG");
+            SetGameModeText("Basic Gamemode");
             ShowPlayerMarkers(0);
             ShowNameTags(true);
             EnableVehicleFriendlyFire();
             SetNameTagDrawDistance(110.0f);
             DisableInteriorEnterExits();
+
+            using (var context = new GamemodeContext())
+            {
+                context.Database.EnsureCreated();
+            }
 
             base.OnInitialized(e);
         }

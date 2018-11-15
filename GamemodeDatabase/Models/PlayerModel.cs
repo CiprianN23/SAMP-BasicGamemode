@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Numerics;
 
 namespace GamemodeDatabase.Models
 {
     public class PlayerModel
     {
-
-
         public int Id { get; set; }
 
         [MaxLength(25)]
