@@ -55,6 +55,7 @@ namespace BasicGamemode.World
             base.OnDisconnected(e);
 
             var player = Account;
+
             player.PositionX = Position.X;
             player.PositionY = Position.Y;
             player.PositionZ = Position.Z;
@@ -63,19 +64,19 @@ namespace BasicGamemode.World
             UpdatePlayerData(player);
         }
 
-        private Vector3 GetPlayerPositionVector3()
-        {
-            var player = Account;
-            return new Vector3(player.PositionX, player.PositionY, player.PositionZ);
-        }
-
-        private void UpdatePlayerData(PlayerModel player)
+        public void UpdatePlayerData(PlayerModel player)
         {
             using (var db = new GamemodeContext())
             {
                 db.Players.Update(player);
                 db.SaveChanges();
             }
+        }
+
+        private Vector3 GetPlayerPositionVector3()
+        {
+            var player = Account;
+            return new Vector3(player.PositionX, player.PositionY, player.PositionZ);
         }
 
         private void _kickTimer_Tick(object sender, EventArgs e)
@@ -85,7 +86,8 @@ namespace BasicGamemode.World
 
         private void LoginPlayer()
         {
-            var dialog = new InputDialog("Login", "Insert your password", true, "Login", "Cancel");
+            var message = $"Insert your password. Tries left: {_loginTries}/{Config.MaximumLoginTries}";
+            var dialog = new InputDialog("Login", message, true, "Login", "Cancel");
             dialog.Show(this);
             dialog.Response += (sender, ev) =>
             {
@@ -109,9 +111,11 @@ namespace BasicGamemode.World
                         }
                         else
                         {
-                            SendClientMessage(Color.Red, "Wrong password");
-                            LoginPlayer();
                             _loginTries++;
+                            SendClientMessage(Color.Red, "Wrong password");
+                            dialog.Message =
+                                $"Wrong password! Retype your password! Tries left: {_loginTries}/{Config.MaximumLoginTries}";
+                            LoginPlayer();
                         }
                     }
                         break;

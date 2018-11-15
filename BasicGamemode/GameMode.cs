@@ -1,7 +1,10 @@
 ﻿using System;
 using BasicGamemode.Controllers;
+using BasicGamemode.World;
 using SampSharp.GameMode;
 using SampSharp.GameMode.Controllers;
+using SampSharp.GameMode.Events;
+using SampSharp.GameMode.World;
 
 namespace BasicGamemode
 {
@@ -15,8 +18,6 @@ namespace BasicGamemode
             EnableVehicleFriendlyFire();
             SetNameTagDrawDistance(110.0f);
             DisableInteriorEnterExits();
-
-            
 
             base.OnInitialized(e);
         }
