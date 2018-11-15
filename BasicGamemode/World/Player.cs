@@ -38,6 +38,8 @@ namespace BasicGamemode.World
 
             SetWorldBounds(2500.0f, 1850.0f, 631.2963f, -454.9898f);
 
+            ToggleSpectating(true);
+
 
             if (Account is null)
                 RegisterPlayer();
@@ -57,7 +59,7 @@ namespace BasicGamemode.World
             player.PositionY = Position.Y;
             player.PositionZ = Position.Z;
             player.FacingAngle = Angle;
-            
+
             UpdatePlayerData(player);
         }
 
@@ -101,6 +103,7 @@ namespace BasicGamemode.World
                         }
                         else if (BCryptHelper.CheckPassword(ev.InputText, player.Password))
                         {
+                            ToggleSpectating(false);
                             SetSpawnInfo(NoTeam, 0, GetPlayerPositionVector3(), player.FacingAngle);
                             Spawn();
                         }
