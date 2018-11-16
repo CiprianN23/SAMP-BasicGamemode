@@ -21,4 +21,4 @@ If you found a bug or want a feature open an issue [here](https://github.com/Ban
 ### Built with
 * [Visual Studio 2017 Comunity](https://visualstudio.microsoft.com/downloads/)
 * [.NET Core 2.1](https://github.com/dotnet/core)
-* [Sampsharp](https://github.com/ikkentim/SampSharp)
+* [Sampsharp 0.8.0-alpha9](https://github.com/ikkentim/SampSharp)
