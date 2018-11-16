@@ -6,6 +6,10 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\samp\BasicGamemode\BasicGamemode\BasicGamemode.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="BCrypt-Core" Version="2.0.0" />
     <PackageReference Include="SampSharp.Core" Version="0.8.0-alpha8" />

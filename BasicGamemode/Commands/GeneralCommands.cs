@@ -8,6 +8,9 @@ using SampSharp.GameMode.World;
 
 namespace BasicGamemode.Commands
 {
+    /// <summary>
+    /// A class containing general use commands for the server
+    /// </summary>
     public class GeneralCommands
     {
         [Command("changepassword")]

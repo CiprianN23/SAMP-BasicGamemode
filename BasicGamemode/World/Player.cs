@@ -13,12 +13,20 @@ using SampSharp.GameMode.World;
 
 namespace BasicGamemode.World
 {
+    /// <summary>
+    /// A child class of BasePlayer
+    /// Used to handle player custom data
+    /// </summary>
     [PooledType]
     public class Player : BasePlayer
     {
         private Timer _kickTimer;
         private int _loginTries;
 
+        /// <summary>
+        /// Fetch player data from the database using LINQ
+        /// </summary>
+        /// <returns>A PlayerModel object</returns>
         public PlayerModel Account
         {
             get
@@ -30,6 +38,25 @@ namespace BasicGamemode.World
             }
         }
 
+        /// <summary>
+        /// Save player data to the database
+        /// </summary>
+        /// <param name="player">A PlayerModel object</param>
+        public void UpdatePlayerData(PlayerModel player)
+        {
+            using (var db = new GamemodeContext())
+            {
+                db.Players.Update(player);
+                db.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Triggered when a player connect to the server
+        /// Handles the player account creation and verification
+        /// Also used for player default values
+        /// </summary>
+        /// <param name="e">An EventArgs object</param>
         public override void OnConnected(EventArgs e)
         {
             GameText("Test RPG", 2000, 5);
@@ -50,6 +77,11 @@ namespace BasicGamemode.World
             base.OnConnected(e);
         }
 
+        /// <summary>
+        /// Triggered when a player disconnect from the server
+        /// Handles cleaning up Player class and save last values to the database
+        /// </summary>
+        /// <param name="e">An DisconnectEventArgs object</param>
         public override void OnDisconnected(DisconnectEventArgs e)
         {
             base.OnDisconnected(e);
@@ -64,26 +96,30 @@ namespace BasicGamemode.World
             UpdatePlayerData(player);
         }
 
-        public void UpdatePlayerData(PlayerModel player)
-        {
-            using (var db = new GamemodeContext())
-            {
-                db.Players.Update(player);
-                db.SaveChanges();
-            }
-        }
-
+        /// <summary>
+        /// Get player position as Vector3 based on X, y and Z values inside the database
+        /// </summary>
+        /// <returns>A Vector3 object containing player coordinates</returns>
         private Vector3 GetPlayerPositionVector3()
         {
             var player = Account;
             return new Vector3(player.PositionX, player.PositionY, player.PositionZ);
         }
 
+        /// <summary>
+        /// Triggered when the _kickTimer Tick() event rises
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">an EventArgs object</param>
         private void _kickTimer_Tick(object sender, EventArgs e)
         {
             Kick();
         }
 
+        /// <summary>
+        /// Handles the player login
+        /// Check the database for the account and log the player in
+        /// </summary>
         private void LoginPlayer()
         {
             var message = $"Insert your password. Tries left: {_loginTries}/{Config.MaximumLoginTries}";
@@ -128,6 +164,10 @@ namespace BasicGamemode.World
             };
         }
 
+        /// <summary>
+        /// Handles the player registration
+        /// Insert a new PlayerModel record in the database
+        /// </summary>
         private void RegisterPlayer()
         {
             var dialog = new InputDialog("Register", "Input your password", true, "Register", "Cancel");
