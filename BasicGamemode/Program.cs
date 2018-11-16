@@ -9,7 +9,6 @@ namespace BasicGamemode
         {
             new GameModeBuilder()
                 .Use<GameMode>()
-                .UseLogLevel(CoreLogLevel.Verbose)
                 .Run();
         }
     }
