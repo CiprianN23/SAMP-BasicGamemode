@@ -19,6 +19,6 @@ To fix a bug or enhance an existing module, follow these steps:
 If you found a bug or want a feature open an issue [here](https://github.com/Banditul/SAMP-BasicGamemode/issues)
 
 ### Built with
-[Visual Studio 2017 Comunity](https://visualstudio.microsoft.com/downloads/)
-[.NET Core 2.1](https://github.com/dotnet/core)
-[Sampsharp](https://github.com/ikkentim/SampSharp)
+* [Visual Studio 2017 Comunity](https://visualstudio.microsoft.com/downloads/)
+* [.NET Core 2.1](https://github.com/dotnet/core)
+* [Sampsharp](https://github.com/ikkentim/SampSharp)
