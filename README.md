@@ -3,6 +3,7 @@ It is a basic GameMode wrote in C# using the [Sampsharp](https://github.com/ikke
 
 ### Getting started
 Clone or fork this project into your machine and open up the project solution using Visual Studio 2017
+Refer to [SampSharp Documentation](http://alpha.sampsharp.timpotze.nl/setup) for further server setup
 
 ### Contribute
 To fix a bug or enhance an existing module, follow these steps:
