@@ -18,5 +18,8 @@ server_log.txt
 /mono/
 /mono-2.0.dll
 
+# .NET Core library
+/dotnet/
+
 # Build directories
 /gamemode/
