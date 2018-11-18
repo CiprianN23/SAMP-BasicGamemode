@@ -19,6 +19,16 @@
             Holds the number of MaximumLoginTries
             </summary>
         </member>
+        <member name="T:BasicGamemode.Controllers.PlayerController">
+            <summary>
+                Share BasePlayer events with BasePlayer child
+            </summary>
+        </member>
+        <member name="M:BasicGamemode.Controllers.PlayerController.RegisterTypes">
+            <summary>
+                Register the BasePlayer childs types
+            </summary>
+        </member>
         <member name="T:BasicGamemode.GameMode">
             <summary>
             The main GameMode class
