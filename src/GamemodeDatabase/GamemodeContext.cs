@@ -1,4 +1,5 @@
-﻿using GamemodeDatabase.Models;
+﻿using System;
+using GamemodeDatabase.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GamemodeDatabase
@@ -9,7 +10,7 @@ namespace GamemodeDatabase
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("Server=localhost;Database=gamemode;Uid=root;Pwd=;");
+            optionsBuilder.UseMySql("Server=localhost;Database=RPGGameMode;Uid=root;Pwd=;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,6 +32,9 @@ namespace GamemodeDatabase
 
                 entity.Property(e => e.FacingAngle)
                     .HasDefaultValue(179.4454);
+
+                entity.Property(e => e.JoinDate)
+                    .HasDefaultValue(DateTime.Now);
             });
         }
     }

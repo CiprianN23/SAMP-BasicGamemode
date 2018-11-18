@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GamemodeDatabase.Models
 {
@@ -6,11 +7,9 @@ namespace GamemodeDatabase.Models
     {
         public int Id { get; set; }
 
-        [MaxLength(25)]
-        public string PlayerName { get; set; }
+        [MaxLength(25)] public string PlayerName { get; set; }
 
-        [MaxLength(61)]
-        public string Password { get; set; }
+        [MaxLength(61)] public string Password { get; set; }
 
         public float PositionX { get; set; }
         public float PositionY { get; set; }
@@ -19,5 +18,11 @@ namespace GamemodeDatabase.Models
 
         public int Money { get; set; }
         public int Score { get; set; }
+
+        public byte AdminLevel { get; set; }
+
+        public DateTime JoinDate { get; set; }
+        public DateTime LastActive { get; set; }
+        
     }
 }
