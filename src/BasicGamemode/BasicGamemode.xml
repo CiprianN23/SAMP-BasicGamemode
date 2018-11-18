@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BasicGamemode</name>
+    </assembly>
+    <members>
+        <member name="T:BasicGamemode.Commands.GeneralCommands">
+            <summary>
+            A class containing general use commands for the server
+            </summary>
+        </member>
+        <member name="T:BasicGamemode.Config">
+            <summary>
+            Static class containing all the static config values
+            </summary>
+        </member>
+        <member name="F:BasicGamemode.Config.MaximumLoginTries">
+            <summary>
+            Holds the number of MaximumLoginTries
+            </summary>
+        </member>
+        <member name="T:BasicGamemode.GameMode">
+            <summary>
+            The main GameMode class
+            Handles the GameMode startup
+            </summary>
+        </member>
+        <member name="M:BasicGamemode.GameMode.OnInitialized(System.EventArgs)">
+            <summary>
+            Triggered when the GameMode starts
+            Used to setup initial values on the server startup and ensure database creation
+            </summary>
+            <param name="e">An EventArgs object</param>
+        </member>
+        <member name="M:BasicGamemode.GameMode.LoadControllers(SampSharp.GameMode.Controllers.ControllerCollection)">
+            <summary>
+            Handles the creation of controllers on the GameMode startup
+            </summary>
+            <param name="controllers">A controllerCollection object</param>
+        </member>
+        <member name="T:BasicGamemode.World.Player">
+            <summary>
+            A child class of BasePlayer
+            Used to handle player custom data
+            </summary>
+        </member>
+        <member name="P:BasicGamemode.World.Player.Account">
+            <summary>
+            Fetch player data from the database using LINQ
+            </summary>
+            <returns>A PlayerModel object</returns>
+        </member>
+        <member name="M:BasicGamemode.World.Player.UpdatePlayerData(GamemodeDatabase.Models.PlayerModel)">
+            <summary>
+            Save player data to the database
+            </summary>
+            <param name="player">A PlayerModel object</param>
+        </member>
+        <member name="M:BasicGamemode.World.Player.OnConnected(System.EventArgs)">
+            <summary>
+            Triggered when a player connect to the server
+            Handles the player account creation and verification
+            Also used for player default values
+            </summary>
+            <param name="e">An EventArgs object</param>
+        </member>
+        <member name="M:BasicGamemode.World.Player.OnDisconnected(SampSharp.GameMode.Events.DisconnectEventArgs)">
+            <summary>
+            Triggered when a player disconnect from the server
+            Handles cleaning up Player class and save last values to the database
+            </summary>
+            <param name="e">An DisconnectEventArgs object</param>
+        </member>
+        <member name="M:BasicGamemode.World.Player.GetPlayerPositionVector3">
+            <summary>
+            Get player position as Vector3 based on X, y and Z values inside the database
+            </summary>
+            <returns>A Vector3 object containing player coordinates</returns>
+        </member>
+        <member name="M:BasicGamemode.World.Player._kickTimer_Tick(System.Object,System.EventArgs)">
+            <summary>
+            Triggered when the _kickTimer Tick() event rises
+            </summary>
+            <param name="sender"></param>
+            <param name="e">an EventArgs object</param>
+        </member>
+        <member name="M:BasicGamemode.World.Player.LoginPlayer">
+            <summary>
+            Handles the player login
+            Check the database for the account and log the player in
+            </summary>
+        </member>
+        <member name="M:BasicGamemode.World.Player.RegisterPlayer">
+            <summary>
+            Handles the player registration
+            Insert a new PlayerModel record in the database
+            </summary>
+        </member>
+    </members>
+</doc>

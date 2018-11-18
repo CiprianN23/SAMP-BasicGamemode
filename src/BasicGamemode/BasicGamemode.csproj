@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\samp\BasicGamemode\BasicGamemode\BasicGamemode.xml</DocumentationFile>
+    <DocumentationFile>D:\samp\src\BasicGamemode\BasicGamemode.xml</DocumentationFile>
+    <OutputPath>D:\samp\env\gamemode\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
