@@ -59,7 +59,7 @@ namespace BasicGamemode.World
         /// <param name="e">An EventArgs object</param>
         public override void OnConnected(EventArgs e)
         {
-            GameText("Test RPG", 2000, 5);
+            GameText("Test BasicGamemode", 2000, 5);
 
             SendClientMessage(Color.GreenYellow, $"Welcome to the server {Name}! Have fun!");
 
