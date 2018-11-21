@@ -1,13 +1,12 @@
-﻿using GamemodeDatabase.Models;
+﻿using System;
+using GamemodeDatabase.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace GamemodeDatabase
 {
     public class GamemodeContext : DbContext
     {
         public DbSet<PlayerModel> Players { get; set; }
-        public DbSet<PlayerBanModel> Bans { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,6 +19,8 @@ namespace GamemodeDatabase
 
             modelBuilder.Entity<PlayerModel>(entity =>
             {
+                entity.HasKey(e => e.Id);
+
                 entity.Property(e => e.PositionX)
                     .HasDefaultValue(1685.8075);
 

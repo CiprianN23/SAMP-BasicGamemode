@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\C#_Projects\SampSharp-rpg\src\RPGGamemode\BasicGamemode.xml</DocumentationFile>
-    <OutputPath>D:\C#_Projects\SampSharp-rpg\env\gamemode\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>D:\C#_Projects\SampSharp-rpg\env\gamemode\</OutputPath>
-    <DocumentationFile>D:\C#_Projects\SampSharp-rpg\src\RPGGamemode\BasicGamemode.xml</DocumentationFile>
+    <DocumentationFile>D:\samp\src\BasicGamemode\BasicGamemode.xml</DocumentationFile>
+    <OutputPath>D:\samp\env\gamemode\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
