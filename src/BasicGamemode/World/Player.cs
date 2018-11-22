@@ -1,4 +1,6 @@
-﻿using BCrypt;
+﻿using System;
+using System.Linq;
+using BCrypt;
 using GamemodeDatabase;
 using GamemodeDatabase.Models;
 using SampSharp.GameMode;
@@ -8,14 +10,13 @@ using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
-using System;
-using System.Linq;
 
 namespace BasicGamemode.World
 {
+    /// <inheritdoc />
     /// <summary>
-    /// A child class of BasePlayer
-    /// Used to handle player custom data
+    ///     A child class of BasePlayer
+    ///     Used to handle player custom data
     /// </summary>
     [PooledType]
     public class Player : BasePlayer
@@ -24,37 +25,31 @@ namespace BasicGamemode.World
         private int _loginTries;
 
         /// <summary>
-        /// Fetch player data from the database using LINQ
+        ///     Fetch player data from the database using LINQ
         /// </summary>
         /// <returns>A PlayerModel object</returns>
-        public PlayerModel Account
-        {
-            get
-            {
-                using (var db = new GamemodeContext())
-                {
-                    return db.Players.Where(x => x.PlayerName == Name).SingleOrDefault();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Save player data to the database
-        /// </summary>
-        /// <param name="player">A PlayerModel object</param>
-        public void UpdatePlayerData(PlayerModel player)
+        public PlayerModel FetchAccountData()
         {
             using (var db = new GamemodeContext())
             {
-                db.Players.Update(player);
-                db.SaveChanges();
+                return db.Players.FirstOrDefault(x => x.PlayerName == Name);
             }
         }
 
         /// <summary>
-        /// Triggered when a player connect to the server
-        /// Handles the player account creation and verification
-        /// Also used for player default values
+        ///     Fetch player data from the database using LINQ given a database context
+        /// </summary>
+        /// <param name="db">A GamemodeContext object</param>
+        /// <returns>A PlayerModel object</returns>
+        public PlayerModel FetchAccountData(GamemodeContext db)
+        {
+            return db.Players.FirstOrDefault(x => x.PlayerName == Name);
+        }
+
+        /// <summary>
+        ///     Triggered when a player connect to the server
+        ///     Handles the player account creation and verification
+        ///     Also used for player default values
         /// </summary>
         /// <param name="e">An EventArgs object</param>
         public override void OnConnected(EventArgs e)
@@ -68,44 +63,46 @@ namespace BasicGamemode.World
             ToggleSpectating(true);
 
 
-            if (Account is null)
+            if (FetchAccountData() is null)
                 RegisterPlayer();
             else
                 LoginPlayer();
-
 
             base.OnConnected(e);
         }
 
         /// <summary>
-        /// Triggered when a player disconnect from the server
-        /// Handles cleaning up Player class and save last values to the database
+        ///     Triggered when a player disconnect from the server
+        ///     Handles cleaning up Player class and save last values to the database
         /// </summary>
         /// <param name="e">An DisconnectEventArgs object</param>
         public override void OnDisconnected(DisconnectEventArgs e)
         {
+            using (var db = new GamemodeContext())
+            {
+                FetchAccountData(db).PositionX = Position.X;
+                FetchAccountData(db).PositionY = Position.Y;
+                FetchAccountData(db).PositionZ = Position.Z;
+                FetchAccountData(db).FacingAngle = Angle;
+                FetchAccountData(db).LastActive = DateTime.Now;
+
+                db.SaveChanges();
+            }
+
             base.OnDisconnected(e);
-
-            Account.PositionX = Position.X;
-            Account.PositionY = Position.Y;
-            Account.PositionZ = Position.Z;
-            Account.FacingAngle = Angle;
-
-            UpdatePlayerData(Account);
         }
 
         /// <summary>
-        /// Get player position as Vector3 based on X, y and Z values inside the database
+        ///     Get player position as Vector3 based on X, y and Z values inside the database
         /// </summary>
         /// <returns>A Vector3 object containing player coordinates</returns>
         private Vector3 GetPlayerPositionVector3()
         {
-            var player = Account;
-            return new Vector3(player.PositionX, player.PositionY, player.PositionZ);
+            return new Vector3(FetchAccountData().PositionX, FetchAccountData().PositionY, FetchAccountData().PositionZ);
         }
 
         /// <summary>
-        /// Triggered when the _kickTimer Tick() event rises
+        ///     Triggered when the _kickTimer Tick() event rises
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e">an EventArgs object</param>
@@ -115,8 +112,8 @@ namespace BasicGamemode.World
         }
 
         /// <summary>
-        /// Handles the player login
-        /// Check the database for the account and log the player in
+        ///     Handles the player login
+        ///     Check the database for the account and log the player in
         /// </summary>
         private void LoginPlayer()
         {
@@ -128,41 +125,41 @@ namespace BasicGamemode.World
                 switch (ev.DialogButton)
                 {
                     case DialogButton.Left:
+                    {
+                        if (_loginTries >= Config.MaximumLoginTries)
                         {
-                            if (_loginTries >= Config.MaximumLoginTries)
-                            {
-                                SendClientMessage(Color.OrangeRed, "You exceed maximum login tries. You have been kicked!");
-                                _kickTimer = new Timer(1500, false);
-                                _kickTimer.Tick += _kickTimer_Tick;
-                            }
-                            else if (BCryptHelper.CheckPassword(ev.InputText, Account.Password))
-                            {
-                                ToggleSpectating(false);
-                                SetSpawnInfo(NoTeam, 0, GetPlayerPositionVector3(), Account.FacingAngle);
-                                Spawn();
-                            }
-                            else
-                            {
-                                _loginTries++;
-                                SendClientMessage(Color.Red, "Wrong password");
-                                dialog.Message =
-                                    $"Wrong password! Retype your password! Tries left: {_loginTries}/{Config.MaximumLoginTries}";
-                                LoginPlayer();
-                            }
+                            SendClientMessage(Color.OrangeRed, "You exceed maximum login tries. You have been kicked!");
+                            _kickTimer = new Timer(1500, false);
+                            _kickTimer.Tick += _kickTimer_Tick;
                         }
+                        else if (BCryptHelper.CheckPassword(ev.InputText, FetchAccountData().Password))
+                        {
+                            ToggleSpectating(false);
+                            SetSpawnInfo(NoTeam, 0, GetPlayerPositionVector3(), FetchAccountData().FacingAngle);
+                            Spawn();
+                        }
+                        else
+                        {
+                            _loginTries++;
+                            SendClientMessage(Color.Red, "Wrong password");
+                            dialog.Message =
+                                $"Wrong password! Retype your password! Tries left: {_loginTries}/{Config.MaximumLoginTries}";
+                            LoginPlayer();
+                        }
+                    }
                         break;
                     case DialogButton.Right:
-                        {
-                            Kick();
-                        }
+                    {
+                        Kick();
+                    }
                         break;
                 }
             };
         }
 
         /// <summary>
-        /// Handles the player registration
-        /// Insert a new PlayerModel record in the database
+        ///     Handles the player registration
+        ///     Insert a new PlayerModel record in the database
         /// </summary>
         private void RegisterPlayer()
         {
@@ -173,27 +170,27 @@ namespace BasicGamemode.World
                 switch (ev.DialogButton)
                 {
                     case DialogButton.Left:
+                    {
+                        using (var db = new GamemodeContext())
                         {
-                            using (var db = new GamemodeContext())
+                            var salt = BCryptHelper.GenerateSalt(10);
+                            var hash = BCryptHelper.HashPassword(ev.InputText, salt);
+                            var player = new PlayerModel
                             {
-                                var salt = BCryptHelper.GenerateSalt(10);
-                                var hash = BCryptHelper.HashPassword(ev.InputText, salt);
-                                var player = new PlayerModel
-                                {
-                                    Password = hash,
-                                    PlayerName = Name
-                                };
-                                db.Players.Add(player);
-                                db.SaveChanges();
+                                Password = hash,
+                                PlayerName = Name
+                            };
+                            db.Players.Add(player);
+                            db.SaveChanges();
 
-                                LoginPlayer();
-                            }
+                            LoginPlayer();
                         }
+                    }
                         break;
                     case DialogButton.Right:
-                        {
-                            Kick();
-                        }
+                    {
+                        Kick();
+                    }
                         break;
                 }
             };

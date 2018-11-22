@@ -49,61 +49,63 @@
             <param name="controllers">A controllerCollection object</param>
         </member>
         <member name="T:BasicGamemode.World.Player">
+            <inheritdoc />
             <summary>
-            A child class of BasePlayer
-            Used to handle player custom data
+                A child class of BasePlayer
+                Used to handle player custom data
             </summary>
         </member>
-        <member name="P:BasicGamemode.World.Player.Account">
+        <member name="M:BasicGamemode.World.Player.FetchAccountData">
             <summary>
-            Fetch player data from the database using LINQ
+                Fetch player data from the database using LINQ
             </summary>
             <returns>A PlayerModel object</returns>
         </member>
-        <member name="M:BasicGamemode.World.Player.UpdatePlayerData(GamemodeDatabase.Models.PlayerModel)">
+        <member name="M:BasicGamemode.World.Player.FetchAccountData(GamemodeDatabase.GamemodeContext)">
             <summary>
-            Save player data to the database
+                Fetch player data from the database using LINQ given a database context
             </summary>
-            <param name="player">A PlayerModel object</param>
+            <param name="db">A GamemodeContext object</param>
+            <returns>A PlayerModel object</returns>
         </member>
         <member name="M:BasicGamemode.World.Player.OnConnected(System.EventArgs)">
             <summary>
-            Triggered when a player connect to the server
-            Handles the player account creation and verification
-            Also used for player default values
+                Triggered when a player connect to the server
+                Handles the player account creation and verification
+                Also used for player default values
             </summary>
             <param name="e">An EventArgs object</param>
         </member>
         <member name="M:BasicGamemode.World.Player.OnDisconnected(SampSharp.GameMode.Events.DisconnectEventArgs)">
             <summary>
-            Triggered when a player disconnect from the server
-            Handles cleaning up Player class and save last values to the database
+                Triggered when a player disconnect from the server
+                Handles cleaning up Player class and save last values to the database
             </summary>
             <param name="e">An DisconnectEventArgs object</param>
         </member>
         <member name="M:BasicGamemode.World.Player.GetPlayerPositionVector3">
             <summary>
-            Get player position as Vector3 based on X, y and Z values inside the database
+                Get player position as Vector3 based on X, y and Z values inside the database
             </summary>
             <returns>A Vector3 object containing player coordinates</returns>
         </member>
         <member name="M:BasicGamemode.World.Player._kickTimer_Tick(System.Object,System.EventArgs)">
             <summary>
-            Triggered when the _kickTimer Tick() event rises
+                Triggered when the _kickTimer Tick() event rises
             </summary>
             <param name="sender"></param>
             <param name="e">an EventArgs object</param>
         </member>
         <member name="M:BasicGamemode.World.Player.LoginPlayer">
             <summary>
-            Handles the player login
-            Check the database for the account and log the player in
+                Handles the player login
+                Check the database for the account and log the player in
             </summary>
         </member>
         <member name="M:BasicGamemode.World.Player.RegisterPlayer">
             <summary>
-            Handles the player registration
-            Insert a new PlayerModel record in the database
+                Handles the player registration
+                Insert a new PlayerModel record in the database
             </summary>
         </member>
     </members>

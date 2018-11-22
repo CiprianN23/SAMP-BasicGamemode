@@ -16,11 +16,6 @@ namespace GamemodeDatabase.Models
         public float PositionZ { get; set; }
         public float FacingAngle { get; set; }
 
-        public int Money { get; set; }
-        public int Score { get; set; }
-
-        public byte AdminLevel { get; set; }
-
         public DateTime JoinDate { get; set; }
         public DateTime LastActive { get; set; }
         

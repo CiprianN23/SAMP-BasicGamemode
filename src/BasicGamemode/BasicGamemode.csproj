@@ -11,6 +11,11 @@
     <OutputPath>D:\samp\env\gamemode\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile />
+    <OutputPath>D:\samp\env\gamemode\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="BCrypt-Core" Version="2.0.0" />
     <PackageReference Include="SampSharp.Core" Version="0.8.0-alpha8" />
