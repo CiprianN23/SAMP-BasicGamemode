@@ -26,10 +26,20 @@ namespace BasicGamemode
             SetNameTagDrawDistance(110.0f);
             DisableInteriorEnterExits();
 
-            using (var context = new GamemodeContext())
+            try
             {
-                context.Database.EnsureCreated();
+                using (var context = new GamemodeContext())
+                {
+                    context.Database.EnsureCreated();
+                }
             }
+            catch (Exception exception)
+            {
+                Console.WriteLine("Connection to the database failed. Check database login details or if database is running.");
+                Console.WriteLine(exception);
+                throw;
+            }
+            
 
             base.OnInitialized(e);
         }
