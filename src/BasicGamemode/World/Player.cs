@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using BCrypt;
+﻿using BCrypt;
 using GamemodeDatabase;
 using GamemodeDatabase.Models;
 using SampSharp.GameMode;
@@ -10,6 +8,8 @@ using SampSharp.GameMode.Events;
 using SampSharp.GameMode.Pools;
 using SampSharp.GameMode.SAMP;
 using SampSharp.GameMode.World;
+using System;
+using System.Linq;
 
 namespace BasicGamemode.World
 {
@@ -61,7 +61,6 @@ namespace BasicGamemode.World
             SetWorldBounds(2500.0f, 1850.0f, 631.2963f, -454.9898f);
 
             ToggleSpectating(true);
-
 
             if (FetchAccountData() is null)
                 RegisterPlayer();
@@ -125,33 +124,34 @@ namespace BasicGamemode.World
                 switch (ev.DialogButton)
                 {
                     case DialogButton.Left:
-                    {
-                        if (_loginTries >= Config.MaximumLoginTries)
                         {
-                            SendClientMessage(Color.OrangeRed, "You exceed maximum login tries. You have been kicked!");
-                            _kickTimer = new Timer(1500, false);
-                            _kickTimer.Tick += _kickTimer_Tick;
+                            if (_loginTries >= Config.MaximumLoginTries)
+                            {
+                                SendClientMessage(Color.OrangeRed, "You exceed maximum login tries. You have been kicked!");
+                                _kickTimer = new Timer(1500, false);
+                                _kickTimer.Tick += _kickTimer_Tick;
+                            }
+                            else if (BCryptHelper.CheckPassword(ev.InputText, FetchAccountData().Password))
+                            {
+                                ToggleSpectating(false);
+                                SetSpawnInfo(NoTeam, 0, GetPlayerPositionVector3(), FetchAccountData().FacingAngle);
+                                Spawn();
+                            }
+                            else
+                            {
+                                _loginTries++;
+                                SendClientMessage(Color.Red, "Wrong password");
+                                dialog.Message =
+                                    $"Wrong password! Retype your password! Tries left: {_loginTries}/{Config.MaximumLoginTries}";
+                                LoginPlayer();
+                            }
                         }
-                        else if (BCryptHelper.CheckPassword(ev.InputText, FetchAccountData().Password))
-                        {
-                            ToggleSpectating(false);
-                            SetSpawnInfo(NoTeam, 0, GetPlayerPositionVector3(), FetchAccountData().FacingAngle);
-                            Spawn();
-                        }
-                        else
-                        {
-                            _loginTries++;
-                            SendClientMessage(Color.Red, "Wrong password");
-                            dialog.Message =
-                                $"Wrong password! Retype your password! Tries left: {_loginTries}/{Config.MaximumLoginTries}";
-                            LoginPlayer();
-                        }
-                    }
                         break;
+
                     case DialogButton.Right:
-                    {
-                        Kick();
-                    }
+                        {
+                            Kick();
+                        }
                         break;
                 }
             };
@@ -170,27 +170,28 @@ namespace BasicGamemode.World
                 switch (ev.DialogButton)
                 {
                     case DialogButton.Left:
-                    {
-                        using (var db = new GamemodeContext())
                         {
-                            var salt = BCryptHelper.GenerateSalt(10);
-                            var hash = BCryptHelper.HashPassword(ev.InputText, salt);
-                            var player = new PlayerModel
+                            using (var db = new GamemodeContext())
                             {
-                                Password = hash,
-                                PlayerName = Name
-                            };
-                            db.Players.Add(player);
-                            db.SaveChanges();
+                                var salt = BCryptHelper.GenerateSalt(10);
+                                var hash = BCryptHelper.HashPassword(ev.InputText, salt);
+                                var player = new PlayerModel
+                                {
+                                    Password = hash,
+                                    PlayerName = Name
+                                };
+                                db.Players.Add(player);
+                                db.SaveChanges();
 
-                            LoginPlayer();
+                                LoginPlayer();
+                            }
                         }
-                    }
                         break;
+
                     case DialogButton.Right:
-                    {
-                        Kick();
-                    }
+                        {
+                            Kick();
+                        }
                         break;
                 }
             };

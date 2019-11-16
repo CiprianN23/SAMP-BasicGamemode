@@ -1,13 +1,11 @@
-﻿using System;
-using GamemodeDatabase.Models;
+﻿using GamemodeDatabase.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System;
 
 namespace GamemodeDatabase
 {
     public class GamemodeContext : DbContext
     {
-
         public DbSet<PlayerModel> Players { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

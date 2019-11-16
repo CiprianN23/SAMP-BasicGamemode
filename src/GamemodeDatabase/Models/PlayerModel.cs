@@ -18,6 +18,5 @@ namespace GamemodeDatabase.Models
 
         public DateTime JoinDate { get; set; }
         public DateTime LastActive { get; set; }
-        
     }
 }

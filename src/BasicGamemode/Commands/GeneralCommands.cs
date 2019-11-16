@@ -14,8 +14,12 @@ namespace BasicGamemode.Commands
     /// </summary>
     public class GeneralCommands
     {
+        /// <summary>
+        /// Comamnd used by Players to change their account password
+        /// </summary>
+        /// <param name="sender"></param>
         [Command("changepassword")]
-        private static void OnPasswordChangeCommand(BasePlayer sender)
+        public static void OnPasswordChangeCommand(BasePlayer sender)
         {
             var player = sender as Player;
 
@@ -26,24 +30,24 @@ namespace BasicGamemode.Commands
                 switch (ev.DialogButton)
                 {
                     case DialogButton.Left:
-                    {
-                        var salt = BCryptHelper.GenerateSalt(10);
-                        var hash = BCryptHelper.HashPassword(ev.InputText, salt);
-                        if (BCryptHelper.CheckPassword(ev.InputText, player.FetchAccountData().Password))
                         {
-                            sender.SendClientMessage(Color.Aqua, "You must input a different password! The password can't be the same as the old one!");
-                        }
-                        else
-                        {
-                            using (var db = new GamemodeContext())
+                            var salt = BCryptHelper.GenerateSalt(10);
+                            var hash = BCryptHelper.HashPassword(ev.InputText, salt);
+                            if (BCryptHelper.CheckPassword(ev.InputText, player.FetchAccountData().Password))
                             {
-                                player.FetchAccountData(db).Password = hash;
-                                db.SaveChanges();
+                                sender.SendClientMessage(Color.Aqua, "You must input a different password! The password can't be the same as the old one!");
                             }
-                                    
-                            player.SendClientMessage(Color.Aqua, "Your password was changed!");
+                            else
+                            {
+                                using (var db = new GamemodeContext())
+                                {
+                                    player.FetchAccountData(db).Password = hash;
+                                    db.SaveChanges();
+                                }
+
+                                player.SendClientMessage(Color.Aqua, "Your password was changed!");
+                            }
                         }
-                    }
                         break;
                 }
             };
