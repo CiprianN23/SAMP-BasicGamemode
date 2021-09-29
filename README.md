@@ -20,6 +20,6 @@ To fix a bug or enhance an existing module, follow these steps:
 If you found a bug or want a feature open an issue [here](https://github.com/Banditul/SAMP-BasicGamemode/issues)
 
 ### Built with
-* [Visual Studio 2019 Comunity](https://visualstudio.microsoft.com/downloads/)
-* [.NET Core 3.0](https://github.com/dotnet/core)
-* [Sampsharp 0.8.0](https://github.com/ikkentim/SampSharp)
+* [Visual Studio 2022 Comunity Preview](https://visualstudio.microsoft.com/downloads/)
+* [.NET 6.0](https://github.com/dotnet/core)
+* [SampSharp 0.9.*](https://github.com/ikkentim/SampSharp)
