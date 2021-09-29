@@ -22,4 +22,4 @@ If you found a bug or want a feature open an issue [here](https://github.com/Ban
 ### Built with
 * [Visual Studio 2022 Comunity Preview](https://visualstudio.microsoft.com/downloads/)
 * [.NET 6.0](https://github.com/dotnet/core)
-* [Sampsharp 0.9.*](https://github.com/ikkentim/SampSharp)
+* [SampSharp 0.9.*](https://github.com/ikkentim/SampSharp)
