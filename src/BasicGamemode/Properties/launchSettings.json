@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "BasicGamemode": {
+      "commandName": "Executable",
+      "executablePath": "D:\\Projects\\SAMP-BasicGamemode\\env\\samp-server.exe",
+      "workingDirectory": "D:\\Projects\\SAMP-BasicGamemode\\env"
+    }
+  }
+}

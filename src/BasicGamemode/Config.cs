@@ -1,13 +1,5 @@
-﻿namespace BasicGamemode
+﻿namespace BasicGamemode;
+public static class Config
 {
-    /// <summary>
-    /// Static class containing all the static config values
-    /// </summary>
-    public static class Config
-    {
-        /// <summary>
-        /// Holds the number of MaximumLoginTries
-        /// </summary>
-        public static int MaximumLoginTries = 3;
-    }
+    public static readonly int MaximumLoginTries = 3;
 }

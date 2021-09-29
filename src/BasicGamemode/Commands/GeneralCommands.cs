@@ -1,56 +1,36 @@
-﻿using BasicGamemode.World;
-using BCrypt;
+﻿using BasicGamemode.Components;
 using GamemodeDatabase;
-using SampSharp.GameMode.Definitions;
-using SampSharp.GameMode.Display;
-using SampSharp.GameMode.SAMP;
-using SampSharp.GameMode.SAMP.Commands;
-using SampSharp.GameMode.World;
+using SampSharp.Entities;
+using SampSharp.Entities.SAMP;
+using SampSharp.Entities.SAMP.Commands;
 
-namespace BasicGamemode.Commands
+namespace BasicGamemode.Commands;
+
+public class GeneralCommands : ISystem
 {
-    /// <summary>
-    /// A class containing general use commands for the server
-    /// </summary>
-    public class GeneralCommands
+    [PlayerCommand]
+    public void PasswordChange(PlayerAccountComponent playerAccount, IDialogService dialogService, GamemodeContext context)
     {
-        /// <summary>
-        /// Comamnd used by Players to change their account password
-        /// </summary>
-        /// <param name="sender"></param>
-        [Command("changepassword")]
-        public static void OnPasswordChangeCommand(BasePlayer sender)
+        var changePasswordDialog = new InputDialog { Caption = "Change your password", Content = "Insert your password", IsPassword = true, Button1 = "Submit", Button2 = "Cancel" };
+
+        void ChangedPasswordDialogHandler(InputDialogResponse r)
         {
-            var player = sender as Player;
-
-            var dialog = new InputDialog("Change your password", "Insert your password", true, "Submit", "Cancel");
-            dialog.Show(sender);
-            dialog.Response += (senderPlayer, ev) =>
+            if (r.Response == DialogResponse.LeftButton)
             {
-                switch (ev.DialogButton)
+                var player = playerAccount.GetComponent<Player>();
+                if (BCrypt.Net.BCrypt.EnhancedVerify(r.InputText, playerAccount.Account.Password))
                 {
-                    case DialogButton.Left:
-                        {
-                            var salt = BCryptHelper.GenerateSalt(10);
-                            var hash = BCryptHelper.HashPassword(ev.InputText, salt);
-                            if (BCryptHelper.CheckPassword(ev.InputText, player.FetchAccountData().Password))
-                            {
-                                sender.SendClientMessage(Color.Aqua, "You must input a different password! The password can't be the same as the old one!");
-                            }
-                            else
-                            {
-                                using (var db = new GamemodeContext())
-                                {
-                                    player.FetchAccountData(db).Password = hash;
-                                    db.SaveChanges();
-                                }
-
-                                player.SendClientMessage(Color.Aqua, "Your password was changed!");
-                            }
-                        }
-                        break;
+                    player.SendClientMessage(Color.Aqua, "You must input a different password! The password can't be the same as the old one!");
                 }
-            };
+                else
+                {
+                    playerAccount.Account.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(r.InputText);
+                    context.SaveChanges();
+                    player.SendClientMessage(Color.Aqua, "Your password was changed!");
+                }
+            }
         }
+
+        dialogService.Show(playerAccount, changePasswordDialog, ChangedPasswordDialogHandler);
     }
 }

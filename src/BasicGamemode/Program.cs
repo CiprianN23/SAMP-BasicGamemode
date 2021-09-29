@@ -1,14 +1,9 @@
-﻿using SampSharp.Core;
+﻿using BasicGamemode;
+using SampSharp.Core;
+using SampSharp.Entities;
 
-namespace BasicGamemode
-{
-    internal class Program
-    {
-        private static void Main()
-        {
-            new GameModeBuilder()
-                .Use<GameMode>()
-                .Run();
-        }
-    }
-}
+new GameModeBuilder()
+    .UseEcs<Startup>()
+    .Run();
+
+
