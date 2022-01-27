@@ -6,19 +6,11 @@ namespace GamemodeDatabase;
 
 public class GamemodeContext : DbContext
 {
-    // Comment to be able to run EF Core migrations
     public GamemodeContext(DbContextOptions<GamemodeContext> options) : base(options)
     {
     }
 
     public DbSet<PlayerModel> Players { get; set; }
-
-    // Only uncomment to able to run EF Core migrations
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    var databaseServerVersion = new MariaDbServerVersion("10.5");
-    //    optionsBuilder.UseMySql("connectionString", databaseServerVersion);
-    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
