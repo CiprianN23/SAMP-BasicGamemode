@@ -15,7 +15,7 @@ public class Startup : IStartup
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
-        var databaseServerVersion = new MariaDbServerVersion("10.5");
+        var databaseServerVersion = new MariaDbServerVersion("10.9");
         services.AddSingleton(configuration)
             .AddSystemsInAssembly()
             .AddDbContextPool<GamemodeContext>(options => options.UseMySql(configuration.GetConnectionString("Default"), databaseServerVersion));

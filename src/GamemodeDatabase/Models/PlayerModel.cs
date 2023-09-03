@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace GamemodeDatabase.Models;
 
+[Index(nameof(Name))]
 public class PlayerModel
 {
     public int Id { get; set; }

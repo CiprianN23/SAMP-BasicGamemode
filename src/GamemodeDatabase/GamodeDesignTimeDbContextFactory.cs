@@ -12,7 +12,7 @@ public class GamodeDesignTimeDbContextFactory : IDesignTimeDbContextFactory<Game
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
-        var databaseServerVersion = new MariaDbServerVersion("10.5");
+        var databaseServerVersion = new MariaDbServerVersion("10.9");
         var optionsBuilder = new DbContextOptionsBuilder<GamemodeContext>();
         optionsBuilder.UseMySql(configuration.GetConnectionString("Default"), databaseServerVersion);
 

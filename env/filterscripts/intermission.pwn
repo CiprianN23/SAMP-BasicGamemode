@@ -42,7 +42,6 @@ forward OnSampSharpDisconnect();
 /* Undeclared natives. */
 native IsValidVehicle(vehicleid);
 
-
 static stock gscPlayerColors[100] =
     { /* Extracted from fixes.inc */
         0xFF8C13FF, 0xC715FFFF, 0x20B2AAFF, 0xDC143CFF, 0x6495EDFF,
@@ -79,6 +78,9 @@ SetDefaultCameraPosition(playerid, spectate)
 
     /* Hide the controls for now. */
     TogglePlayerSpectating(playerid, spectate);
+    
+    if(!spectate)
+        SetPlayerPos(playerid, 0, 0, 5);
 
     /* Set their camera position. */
     SetPlayerCameraPos(playerid, CAMERA_POSITION);
@@ -152,9 +154,10 @@ DestroyPlayerResources(playerid)
     SetPlayerTime(playerid, 12, 0);
     
     /* Pools */
-    DESTROY_POOL_PFX(DestroyPlayerObject,MAX_PLAYER_OBJECTS-1,playerid);
-    DESTROY_POOL_PFX_TAG(PlayerTextDrawDestroy, MAX_PLAYER_TEXT_DRAWS-1,playerid,PlayerText:);
-    DESTROY_POOL_PFX_TAG(DeletePlayer3DTextLabel, MAX_3DTEXT_PLAYER-1,playerid,PlayerText3D:);
+    // Disabled: Can cause crashes
+    //DESTROY_POOL_PFX(DestroyPlayerObject,MAX_PLAYER_OBJECTS-1,playerid);
+    //DESTROY_POOL_PFX_TAG(PlayerTextDrawDestroy, MAX_PLAYER_TEXT_DRAWS-1,playerid,PlayerText:);
+    //DESTROY_POOL_PFX_TAG(DeletePlayer3DTextLabel, MAX_3DTEXT_PLAYER-1,playerid,PlayerText3D:);
     
     /* PVar */
     for(new i = GetPVarsUpperIndex(playerid); i >= 0; i--)
