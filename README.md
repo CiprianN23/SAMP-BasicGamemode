@@ -23,4 +23,4 @@ If you found a bug or want a feature open an issue [here](https://github.com/Cip
 ### Built with
 * [Visual Studio 2022 Comunity](https://visualstudio.microsoft.com/downloads/)
 * [.NET 6.0](https://github.com/dotnet/core)
-* [SampSharp 0.9.*](https://github.com/ikkentim/SampSharp)
+* [SampSharp 0.10.*](https://github.com/ikkentim/SampSharp)
